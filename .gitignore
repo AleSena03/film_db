@@ -1,0 +1,6 @@
+data/
+config/
+logs/
+venv/
+.idea/
+
