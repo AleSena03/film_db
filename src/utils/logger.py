@@ -6,24 +6,18 @@ from pathlib import Path
 from typing import Optional
 
 
-PATH_PROGETTO: Path = Path(__file__).resolve().parent.parent.parent
-# output -> C:\Users\...\film_db
-PATH_CARTELLA_LOG: Path = PATH_PROGETTO / "logs"
-PATH_FILE_LOG: Path = PATH_CARTELLA_LOG / "importa_log.log"
-
-
-def configura_logger(
-        nome_file: Optional[Path] = None,
+def config_logger(
+        file_log: Optional[str] = None,
         bytes_max: int = 1048576,
         files_backup: int = 5
 ) -> Logger:
     """
-    Configura un logger con RotatingFileHandler e StreamHandler.
+    Configura un logger avanzato con RotatingFileHandler e StreamHandler.
 
     Parameters
     ----------
-    nome_file : Optional[Path] = None
-        Percorso del file di log.
+    file_log : Optional[str] = None
+        Nome del file di log.
     bytes_max : int = 1048576 (1 MB)
         Dimensione massima del file di log prima della rotazione.
     files_backup : int = 5
@@ -44,14 +38,15 @@ def configura_logger(
             datefmt="%Y-%m-%d %H:%M:%S"
         )
 
-        if nome_file:
+        if file_log:
             # CREA DIRECTORY PER IL FILE DI LOG
-            path_assoluto: Path = PATH_PROGETTO / nome_file
-            path_assoluto.parent.mkdir(parents=True, exist_ok=True)
+            path_root: Path = Path(__file__).resolve().parent.parent.parent
+            path_log: Path = path_root / "logs"/ file_log
+            path_log.parent.mkdir(parents=True, exist_ok=True)
 
             # CREA ROTATING FILE HANDLER
             file_handler: RotatingFileHandler = RotatingFileHandler(
-                filename=path_assoluto,
+                filename=path_log,
                 mode="a",
                 maxBytes=bytes_max,
                 backupCount=files_backup,
@@ -69,7 +64,6 @@ def configura_logger(
 
 
 # CONFIGURAZIONE DEL LOGGER PRINCIPALE
-logger: Logger = configura_logger(
-    nome_file=PATH_FILE_LOG.relative_to(PATH_PROGETTO),
-    # output -> logs/importa_log.log
+logger: Logger = config_logger(
+    file_log="importa_log.log"
 )
