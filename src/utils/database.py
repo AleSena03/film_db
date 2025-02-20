@@ -1,4 +1,4 @@
-"""Modulo che gestisce la connessione e le transazioni con il database."""
+"""Modulo che gestisce la connessione con il database."""
 from typing import Tuple, Dict, Optional
 
 import mysql.connector
@@ -9,7 +9,7 @@ from logger import logger
 
 
 class GestoreDatabase:
-    """Gestisce la connessione e le transazioni con il database."""
+    """Gestisce la connessione col database."""
 
     def __init__(self, config: Dict[str, str]) -> None:
         """Inizializza le informazioni di configurazione del database."""
@@ -26,7 +26,7 @@ class GestoreDatabase:
             return self.connessione, self.cursore
 
         except Error as errore:
-            logger.error(f"Errore di connessione al database.\n{errore}", exc_info=True)
+            logger.error(f"Errore di connessione al database - {errore}", exc_info=True)
             raise
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
@@ -47,7 +47,7 @@ class GestoreDatabase:
                 logger.info("Chiusura della connessione col database avvenuta con successo.")
 
         except Error as errore:
-            logger.error(f"Errore di chiusura della connessione con il database.\n{errore}")
+            logger.error(f"Errore di chiusura della connessione con il database - {errore}")
 
             if not exc_type:
                 raise

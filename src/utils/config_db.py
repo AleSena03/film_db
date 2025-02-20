@@ -26,8 +26,8 @@ def config_db(file_config: str = "config_db.ini") -> Dict[str, str]:
 
     # VERIFICA ESISTENZA DEL FILE .INI
     if not path_config.exists():
-        logger.error(f"Il file {path_config} non è stato trovato.")
-        raise FileNotFoundError(f"File non trovato.")
+        logger.error(f"Il file '{path_config}' non è stato trovato.")
+        raise FileNotFoundError(f"Il file '{path_config}' non è stato trovato.")
 
     config: ConfigParser = configparser.ConfigParser()
     config.read(path_config)
@@ -35,7 +35,7 @@ def config_db(file_config: str = "config_db.ini") -> Dict[str, str]:
     # VERIFICA L'ESISTENZA DELLA SEZIONE NECESSARIA
     if not config.has_section("database"):
         logger.error("Sezione [database] mancante nel file di configurazione.")
-        raise ValueError("Sezione [database] mancante.")
+        raise ValueError("Sezione [database] mancante nel file di configurazione.")
 
     keys: List[str] = [
         "host",
@@ -49,8 +49,8 @@ def config_db(file_config: str = "config_db.ini") -> Dict[str, str]:
     for key in keys:
         # VERIFICA L'ESISTENZA DELLE OPZIONI NECESSARIE
         if not config.has_option("database", key):
-            logger.error(f"Chiave {key} mancante nel file di configurazione.")
-            raise ValueError(f"Chiave mancante.")
+            logger.error(f"Chiave '{key}' mancante nel file di configurazione.")
+            raise ValueError(f"Chiave '{key}' mancante nel file di configurazione.")
         configurazione_db[key] = config.get("database", key)
 
     configurazione_db["database"] = configurazione_db.pop("db")
