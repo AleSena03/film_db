@@ -31,11 +31,29 @@ def config_df() -> Optional[DataFrame]:
 
     try:
         logger.info("Configurazione del dataframe...")
+
+        miss_columns: List[str] = [col for col in COLUMNS_REQUIRED if col not in df.columns]
+        if miss_columns:
+            logger.error(f"Colonne mancanti nel dataframe: {", ".join(miss_columns)}")
+            return None
+
         df: DataFrame = df[COLUMNS_REQUIRED]
         df: DataFrame = df.replace({np.nan: None, "": None})
 
-        logger.info("Dataframe configurato")
+        initial_record: int = len(df)
+        df: DataFrame = df.dropna(subset=["titolo"])
+
+        removed_record: int = initial_record - len(df)
+        if removed_record > 0:
+            logger.warning(f"Rimossi: {removed_record} record con titolo mancante o non valido")
+
+        if df.empty:
+            logger.error("Nessuna record rimasto")
+            return None
+
+        logger.info(f"Dataframe configurato: {len(df)} record presenti")
         return df
 
     except Exception as err:
         logger.error(f"Errore generico durante la configurazione del dataframe - {err}", exc_info=True)
+        return None

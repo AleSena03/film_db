@@ -21,3 +21,4 @@ def to_csv() -> None:
 
     except Exception as err:
         logger.error(f"Errore generico durante la conversione in CSV - {err}", exc_info=True)
+        return None
