@@ -6,7 +6,7 @@ from watchdog.events import FileSystemEventHandler, DirModifiedEvent, FileModifi
 
 from src.services.excel_to_csv import excel_to_csv
 from src.utils.logger import logger
-from src.utils.config import EXCEL_FILE_PATH, POLL_INTERVAL
+from src.utils.path import EXCEL_FILE_PATH, POLL_INTERVAL
 
 
 class ExcelHandler(FileSystemEventHandler):

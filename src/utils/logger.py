@@ -4,12 +4,15 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from typing import Optional
 
-from src.utils.config import LOG_DIR_PATH, LOG_FILE_NAME
+from src.utils.path import LOG_DIR_PATH
+
+
+LOG_FILE_NAME: str = "logs.log"
 
 
 class Logger:
     """
-    Rappresenta un logger avanzato che utilizza RotatingFileHandler e StreamHandler
+    Rappresenta un logger avanzato che utilizza RotatingFileHandler e StreamHandler.
 
     Attributes
     ----------
@@ -19,7 +22,6 @@ class Logger:
         La dimensione massima (in byte) che i file di log possono raggiungere prima della rotazione.
     self.__backup_files : int = 5
         Il numero massimo dei file di log di backup che possono essere mantenuti.
-
     """
 
     def __init__(
@@ -35,9 +37,11 @@ class Logger:
 
     @property
     def logger(self):
+        """Restituisce il logger."""
         return self.__logger
 
     def __set_logger(self):
+        """Configura un logger avanzato che utilizza RotatingFileHandler e StreamHandler."""
         log = logging.getLogger(__name__)
         log.setLevel(INFO)
 

@@ -5,7 +5,7 @@ from watchdog.events import FileSystemEventHandler
 
 from src.models.excel_handler import ExcelHandler
 from src.utils.logger import logger
-from src.utils.config import EXCEL_FILE_PATH, POLL_INTERVAL
+from src.utils.path import EXCEL_FILE_PATH, POLL_INTERVAL
 
 
 class Watcher:
