@@ -1,4 +1,5 @@
 from typing import List, Optional
+
 import numpy as np
 from pandas import DataFrame
 
@@ -27,11 +28,8 @@ COLUMNS_REQUIRED: List[str] = [
 
 def config_df() -> Optional[DataFrame]:
     """Configura un dataframe."""
-    df: DataFrame = read_excel()
-
     try:
-        logger.info("Configurazione del dataframe...")
-
+        df: DataFrame = read_excel()
         miss_columns: List[str] = [col for col in COLUMNS_REQUIRED if col not in df.columns]
         if miss_columns:
             logger.error(f"Colonne mancanti nel dataframe: {", ".join(miss_columns)}")
@@ -51,7 +49,6 @@ def config_df() -> Optional[DataFrame]:
             logger.error("Nessuna record rimasto")
             return None
 
-        logger.info(f"Dataframe configurato: {len(df)} record presenti")
         return df
 
     except Exception as err:

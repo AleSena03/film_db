@@ -1,40 +1,43 @@
 from pathlib import Path
+from threading import Lock
 from time import time
 
+from watchdog.events import FileSystemEventHandler, FileModifiedEvent
 
-from watchdog.events import FileSystemEventHandler, DirModifiedEvent, FileModifiedEvent
-
-from src.services.excel_to_csv import excel_to_csv
+from src.services.to_csv import to_csv
 from src.utils.logger import logger
 from src.utils.path import EXCEL_FILE_PATH, POLL_INTERVAL
 
 
 class ExcelHandler(FileSystemEventHandler):
+    """Gestisce le modifiche avvenute sul file Excel."""
 
     def __init__(self):
-        self.last_trigger = 0
+        self.last_trigger: int = 0
+        self.lock: Lock = Lock()
         super().__init__()
 
-    def on_modified(self, event: DirModifiedEvent | FileModifiedEvent) -> None:
-        logger.debug(f"Evento ricevuto: {type(event)} - {event.src_path}")
+    def on_modified(self, event: FileModifiedEvent) -> None:
+        try:
+            with (self.lock):
+                if (time() - self.last_trigger) < POLL_INTERVAL:
+                    return
 
-        if not isinstance(event, FileModifiedEvent):
-            return
+                event_path: Path = Path(event.src_path).resolve()
+                if not event_path.exists() or event_path.is_dir():
+                    return
 
-        current_time = time()
-        elapsed = current_time - self.last_trigger
-        if elapsed < POLL_INTERVAL:
-            logger.debug(f"Debounce attivo: {elapsed:.2f}s")
-            return
+                if event_path != EXCEL_FILE_PATH:
+                    return
 
+                if event_path.stat().st_mtime <= self.last_trigger:
+                    return
 
+                logger.info("File Excel modificato")
+                to_csv()
+                self.last_trigger = time()
 
-        event_path = str(Path(event.src_path).resolve()).lower()
-        if event_path == str(EXCEL_FILE_PATH.resolve()).lower():
-            logger.info("File Excel modificato")
-            logger.debug(f"Evento ricevuto: {event}")
-            self.last_trigger = current_time
-            excel_to_csv()
-
-        else:
-            logger.debug(f"Ignorato evento per: {event_path}")
+        except OSError as err:
+            logger.error(f"Errore di accesso al file {event} - {err}", exc_info=True)
+        except Exception as err:
+            logger.error(f"Errore generico durante l'elaborazione - {err}", exc_info=True)

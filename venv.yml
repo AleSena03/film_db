@@ -1,12 +1,12 @@
 name: film_db
 channels:
   - defaults
-  - conda-forge
 dependencies:
   - blas=1.0
   - bottleneck=1.4.2
   - bzip2=1.0.8
   - ca-certificates=2024.12.31
+  - et_xmlfile=1.1.0
   - expat=2.6.4
   - flake8=7.1.1
   - icc_rt=2022.1.0
@@ -25,6 +25,7 @@ dependencies:
   - numexpr=2.10.1
   - numpy=2.2.2
   - numpy-base=2.2.2
+  - openpyxl=3.1.5
   - openssl=3.0.15
   - pandas=2.2.3
   - pip=25.0

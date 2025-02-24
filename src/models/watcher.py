@@ -9,6 +9,7 @@ from src.utils.path import EXCEL_FILE_PATH, POLL_INTERVAL
 
 
 class Watcher:
+    """Monitora eventuali modifiche del file Excel."""
 
     def __init__(self):
         self.observer = Observer(timeout=1)

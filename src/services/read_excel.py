@@ -39,8 +39,6 @@ def read_excel() -> Optional[DataFrame]:
         if EXCEL_FILE_PATH.stat().st_size == 0:
             raise ValueError("Il file Excel è vuoto")
 
-        logger.info("Lettura file Excel...")
-
         df: DataFrame = pd.read_excel(
             EXCEL_FILE_PATH,
             sheet_name=EXCEL_SHEET_NAME,
@@ -48,7 +46,6 @@ def read_excel() -> Optional[DataFrame]:
             engine="openpyxl"
         )
 
-        logger.info("File Excel letto con successo")
         return df
 
     except FileNotFoundError as err:

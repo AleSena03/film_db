@@ -1,5 +1,5 @@
 import logging
-from logging import Formatter, StreamHandler, INFO
+from logging import Formatter, StreamHandler, DEBUG
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from typing import Optional
@@ -7,7 +7,7 @@ from typing import Optional
 from src.utils.path import LOG_DIR_PATH
 
 
-LOG_FILE_NAME: str = "logs.log"
+LOG_FILE_NAME: str = "film_db_logs.log"
 
 
 class Logger:
@@ -43,7 +43,7 @@ class Logger:
     def __set_logger(self):
         """Configura un logger avanzato che utilizza RotatingFileHandler e StreamHandler."""
         log = logging.getLogger(__name__)
-        log.setLevel(INFO)
+        log.setLevel(DEBUG)
 
         if not log.handlers:
             formatter: Formatter = Formatter(
@@ -52,7 +52,7 @@ class Logger:
             )
 
             if self.__file_name:
-                file_path: Path = LOG_DIR_PATH / self.__file_name
+                file_path: Path = (LOG_DIR_PATH / self.__file_name).resolve()
                 file_path.parent.mkdir(parents=True, exist_ok=True)
 
                 file_handler: RotatingFileHandler = RotatingFileHandler(

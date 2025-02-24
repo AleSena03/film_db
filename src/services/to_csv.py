@@ -7,9 +7,8 @@ from src.services.config_df import config_df
 
 def to_csv() -> None:
     """Converte un dataframe Excel in un file CSV."""
-    df: DataFrame = config_df()
-
     try:
+        df: DataFrame = config_df()
         logger.info("Conversione Excel -> CSV...")
         df.to_csv(
             str(CSV_FILE_PATH),
