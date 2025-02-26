@@ -5,14 +5,14 @@ from watchdog.events import FileSystemEventHandler
 
 from src.models.excel_handler import ExcelHandler
 from src.utils.logger import logger
-from src.utils.path import EXCEL_FILE_PATH, POLL_INTERVAL
+from src.utils.path import EXCEL_FILE_PATH
 
 
 class Watcher:
     """Monitora eventuali modifiche del file Excel."""
 
     def __init__(self):
-        self.observer = Observer(timeout=1)
+        self.observer = Observer(timeout=5)
 
     def start(self):
         logger.info("Monitoraggio modifiche...")
@@ -28,7 +28,7 @@ class Watcher:
 
         try:
             while True:
-                time.sleep(POLL_INTERVAL)
+                time.sleep(1)
 
         except KeyboardInterrupt:
             self.observer.stop()

@@ -6,7 +6,7 @@ from watchdog.events import FileSystemEventHandler, FileModifiedEvent
 
 from src.services.to_csv import to_csv
 from src.utils.logger import logger
-from src.utils.path import EXCEL_FILE_PATH, POLL_INTERVAL
+from src.utils.path import EXCEL_FILE_PATH
 
 
 class ExcelHandler(FileSystemEventHandler):
@@ -20,7 +20,7 @@ class ExcelHandler(FileSystemEventHandler):
     def on_modified(self, event: FileModifiedEvent) -> None:
         try:
             with (self.lock):
-                if (time() - self.last_trigger) < POLL_INTERVAL:
+                if (time() - self.last_trigger) < 2:
                     return
 
                 event_path: Path = Path(event.src_path).resolve()

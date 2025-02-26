@@ -36,6 +36,9 @@ def read_excel() -> Optional[DataFrame]:
         if not EXCEL_FILE_PATH.exists():
             raise FileNotFoundError(f"File Excel non trovato: {EXCEL_FILE_PATH}")
 
+        if not EXCEL_FILE_PATH.is_file():
+            raise ValueError(f"Il percorso {EXCEL_FILE_PATH} non è un file")
+
         if EXCEL_FILE_PATH.stat().st_size == 0:
             raise ValueError("Il file Excel è vuoto")
 
