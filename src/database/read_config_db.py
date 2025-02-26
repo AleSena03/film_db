@@ -48,7 +48,10 @@ def read_config_db() -> Optional[Dict[str, str]]:
 
     except FileNotFoundError as err:
         logger.error(err, exc_info=True)
+        raise
     except ValueError as err:
         logger.error(err, exc_info=True)
+        raise
     except Exception as err:
         logger.error(f"Errore generico durante la lettura del file di configurazione del database - {err}", exc_info=True)
+        raise
